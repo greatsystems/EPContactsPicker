@@ -159,12 +159,6 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
   
     
     
-    func showAlertWith(title:String, message:String) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let actionButton = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(actionButton)
-        self.present(alertController, animated: true, completion: nil)
-    }
     
     func getContacts(_ completion:  @escaping ContactsHandler) {
         if contactsStore == nil {
@@ -177,22 +171,18 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             case CNAuthorizationStatus.denied, CNAuthorizationStatus.restricted:
                 //User has denied the current app to access the contacts.
             
-                self.showAlertWith(title:NSLocalizedString("Error", comment: "Title Msg error")  , message: NSLocalizedString("ErrorConnect", comment: "Msg error"))
+                let productName = Bundle.main.infoDictionary!["CFBundleName"]!
 
-            
-//                let productName = Bundle.main.infoDictionary!["CFBundleName"]!
-//
-//                let alert = UIAlertController(title: "Unable to access contacts", message: "\(productName) does not have access to contacts. Kindly enable it in privacy settings ", preferredStyle: UIAlertControllerStyle.alert)
-//                let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {  action in
-//                    self.contactDelegate?.epContactPicker(self, didContactFetchFailed: error)
-//                    completion([], error)
-//                    self.dismiss(animated: true, completion: nil)
-//                })
-//                
-//                
-//                
-//                alert.addAction(okAction)
-//                self.present(alert, animated: true, completion: nil)
+                let alert = UIAlertController(title: "Unable to access contacts", message: "\(productName) does not have access to contacts. Kindly enable it in privacy settings ", preferredStyle: UIAlertControllerStyle.alert)
+                let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {  action in
+                    self.contactDelegate?.epContactPicker(self, didContactFetchFailed: error)
+                    completion([], error)
+                    self.dismiss(animated: true, completion: nil)
+                })
+                
+                
+                alert.addAction(okAction)
+                self.present(alert, animated: true, completion: nil)
             
             case CNAuthorizationStatus.notDetermined:
                 //This case means the user is prompted for the first time for allowing contacts
