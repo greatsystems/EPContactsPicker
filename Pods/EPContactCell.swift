@@ -25,6 +25,7 @@ class EPContactCell: UITableViewCell {
         selectionStyle = UITableViewCellSelectionStyle.none
         contactContainerView.layer.masksToBounds = true
         contactContainerView.layer.cornerRadius = contactContainerView.frame.size.width/2
+         contactContainerView.backgroundColor = UIColor.clear
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -33,9 +34,9 @@ class EPContactCell: UITableViewCell {
     
     func updateInitialsColorForIndexPath(_ indexpath: IndexPath) {
         //Applies color to Initial Label
-        let colorArray = [EPGlobalConstants.Colors.amethystColor,EPGlobalConstants.Colors.asbestosColor,EPGlobalConstants.Colors.emeraldColor,EPGlobalConstants.Colors.peterRiverColor,EPGlobalConstants.Colors.pomegranateColor,EPGlobalConstants.Colors.pumpkinColor,EPGlobalConstants.Colors.sunflowerColor]
-        let randomValue = (indexpath.row + indexpath.section) % colorArray.count
-        contactInitialLabel.backgroundColor = colorArray[randomValue]
+//        let colorArray = [EPGlobalConstants.Colors.amethystColor,EPGlobalConstants.Colors.asbestosColor,EPGlobalConstants.Colors.emeraldColor,EPGlobalConstants.Colors.peterRiverColor,EPGlobalConstants.Colors.pomegranateColor,EPGlobalConstants.Colors.pumpkinColor,EPGlobalConstants.Colors.sunflowerColor]
+//        let randomValue = (indexpath.row + indexpath.section) % colorArray.count
+//        contactInitialLabel.backgroundColor = colorArray[randomValue]
     }
  
     func updateContactsinUI(_ contact: EPContact, indexPath: IndexPath, subtitleType: SubtitleCellValue) {
@@ -43,15 +44,21 @@ class EPContactCell: UITableViewCell {
         //Update all UI in the cell here
         self.contactTextLabel?.text = contact.displayName()
         updateSubtitleBasedonType(subtitleType, contact: contact)
+        self.contactImageView?.image = #imageLiteral(resourceName: "img_Avatar")
+        self.contactImageView.isHidden = false
+        self.contactImageView.backgroundColor = .clear
+        self.contactInitialLabel.isHidden = true
+        
         if contact.thumbnailProfileImage != nil {
             self.contactImageView?.image = contact.thumbnailProfileImage
             self.contactImageView.isHidden = false
             self.contactInitialLabel.isHidden = true
         } else {
-            self.contactInitialLabel.text = contact.contactInitials()
-            updateInitialsColorForIndexPath(indexPath)
-            self.contactImageView.isHidden = true
-            self.contactInitialLabel.isHidden = false
+            
+//            self.contactInitialLabel.text = contact.contactInitials()
+//            updateInitialsColorForIndexPath(indexPath)
+//            self.contactImageView.isHidden = true
+//            self.contactInitialLabel.isHidden = false
         }
     }
     

@@ -49,17 +49,29 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
     
+    
+    
     // MARK: - Lifecycle Methods
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-        self.title = EPGlobalConstants.Strings.contactsTitle
+        //self.title = EPGlobalConstants.Strings.contactsTitle
+    
+        
+        
+        
+        self.tableView.contentInset = UIEdgeInsets(top: 40, left: 0, bottom: 0, right: 0)
+        
+
+            
 
         registerContactCell()
-        inititlizeBarButtons()
-        initializeSearchBar()
+     //   inititlizeBarButtons()
+    //    initializeSearchBar()
         reloadContacts()
     }
+    
+    
     
     func initializeSearchBar() {
         self.resultSearchController = ( {
@@ -72,6 +84,9 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             return controller
         })()
     }
+    
+    
+    
     
     func inititlizeBarButtons() {
         let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(onTouchCancelButton))
@@ -278,29 +293,11 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
         
         let cell = tableView.cellForRow(at: indexPath) as! EPContactCell
         let selectedContact =  cell.contact!
-        if multiSelectEnabled {
-            //Keeps track of enable=ing and disabling contacts
-            if cell.accessoryType == UITableViewCellAccessoryType.checkmark {
-                cell.accessoryType = UITableViewCellAccessoryType.none
-                selectedContacts = selectedContacts.filter(){
-                    return selectedContact.contactId != $0.contactId
-                }
-            }
-            else {
-                cell.accessoryType = UITableViewCellAccessoryType.checkmark
-                selectedContacts.append(selectedContact)
-            }
+        selectedContacts.append(selectedContact)//
+        DispatchQueue.main.async {
+            self.contactDelegate?.epContactPicker(self, didSelectContact: selectedContact)
         }
-        else {
-            //Single selection code
-			resultSearchController.isActive = false
-			self.dismiss(animated: true, completion: {
-				DispatchQueue.main.async {
-					self.contactDelegate?.epContactPicker(self, didSelectContact: selectedContact)
-				}
-			})
-        }
-    }
+   }
     
     override open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60.0
