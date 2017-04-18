@@ -44,7 +44,7 @@ class EPContactCell: UITableViewCell {
         //Update all UI in the cell here
         self.contactTextLabel?.text = contact.displayName()
         updateSubtitleBasedonType(subtitleType, contact: contact)
-        self.contactImageView?.image = #imageLiteral(resourceName: "img_Avatar")
+       // self.contactImageView?.image = #imageLiteral(resourceName: "img_Avatar")
         self.contactImageView.isHidden = false
         self.contactImageView.backgroundColor = .clear
         self.contactInitialLabel.isHidden = true

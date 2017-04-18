@@ -15,6 +15,7 @@ public protocol EPPickerDelegate {
     func epContactPicker(_: EPContactsPicker, didCancel error: NSError)
     func epContactPicker(_: EPContactsPicker, didSelectContact contact: EPContact)
 	func epContactPicker(_: EPContactsPicker, didSelectMultipleContacts contacts: [EPContact])
+    
 }
 
 public extension EPPickerDelegate {
@@ -37,7 +38,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     
     // MARK: - Properties
     
-    open var contactDelegate: EPPickerDelegate?
+    var contactDelegate: EPPickerDelegate?
     var contactsStore: CNContactStore?
     var resultSearchController = UISearchController()
     var orderedContacts = [String: [CNContact]]() //Contacts ordered in dicitonary alphabetically
@@ -171,18 +172,18 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             case CNAuthorizationStatus.denied, CNAuthorizationStatus.restricted:
                 //User has denied the current app to access the contacts.
             
-                let productName = Bundle.main.infoDictionary!["CFBundleName"]!
-
-                let alert = UIAlertController(title: "Unable to access contacts", message: "\(productName) does not have access to contacts. Kindly enable it in privacy settings ", preferredStyle: UIAlertControllerStyle.alert)
-                let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {  action in
-                    self.contactDelegate?.epContactPicker(self, didContactFetchFailed: error)
-                    completion([], error)
-                    self.dismiss(animated: true, completion: nil)
-                })
-                
-                
-                alert.addAction(okAction)
-                self.present(alert, animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    let productName = Bundle.main.infoDictionary!["CFBundleName"]!
+                    
+                    let alertController = UIAlertController(title: productName as? String, message: NSLocalizedString("ErrorContact", comment: ""), preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
+                        UIAlertAction in
+                        let _ = self.navigationController?.popViewController(animated: true)
+                    }
+                    alertController.addAction(okAction)
+                    self.present(alertController, animated: true, completion: nil)
+                    
+                }
             
             case CNAuthorizationStatus.notDetermined:
                 //This case means the user is prompted for the first time for allowing contacts
