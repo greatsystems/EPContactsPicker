@@ -173,7 +173,7 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
                 //User has denied the current app to access the contacts.
             
                 DispatchQueue.main.async {
-                    let productName = Bundle.main.infoDictionary!["CFBundleName"]!
+                    let productName = Bundle.main.infoDictionary!["CFBundleDisplayName"]!
                     
                     let alertController = UIAlertController(title: productName as? String, message: NSLocalizedString("ErrorContact", comment: ""), preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
