@@ -17,6 +17,7 @@ class EPContactCell: UITableViewCell {
     @IBOutlet weak var contactContainerView: UIView!
     
     var contact: EPContact?
+    var phoneNumberNot:String?
     
     override func awakeFromNib() {
         
@@ -76,7 +77,19 @@ class EPContactCell: UITableViewCell {
                 self.contactDetailTextLabel.text = "\(contact.phoneNumbers[0].phoneNumber)"
             }
             else {
-                self.contactDetailTextLabel.text = EPGlobalConstants.Strings.phoneNumberNotAvaialable
+                
+                let preferredLanguage = NSLocale.preferredLanguages[0] as String
+                
+                if preferredLanguage == "ru-RU" {
+                    phoneNumberNot = "Нет номера телефона"
+                }
+                else{
+                   phoneNumberNot = "No phone number is available"
+                }
+
+                self.contactDetailTextLabel.text = phoneNumberNot
+
+               // self.contactDetailTextLabel.text = EPGlobalConstants.Strings.phoneNumberNotAvaialable
             }
         case SubtitleCellValue.email:
             let emailCount = contact.emails.count

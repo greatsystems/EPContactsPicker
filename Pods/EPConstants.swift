@@ -11,6 +11,9 @@ import UIKit
 //Declare all the static constants here
 struct EPGlobalConstants {
     
+    
+    
+    
 //MARK: String Constants
     struct Strings {
         static let birdtdayDateFormat = "MMM d"

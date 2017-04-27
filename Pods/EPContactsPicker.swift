@@ -50,7 +50,8 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
     var subtitleCellValue = SubtitleCellValue.phoneNumber
     var multiSelectEnabled: Bool = false //Default is single selection contact
     
-    
+    var errorContact:String?
+
     
     // MARK: - Lifecycle Methods
     
@@ -174,8 +175,17 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             
                 DispatchQueue.main.async {
                     let productName = Bundle.main.infoDictionary!["CFBundleDisplayName"]!
+                    let preferredLanguage = NSLocale.preferredLanguages[0] as String
+
+                    if preferredLanguage == "ru-RU" {
+                        self.errorContact = "Включите доступ к ''Контакты'' в Настройках смартфона"
+                    }
+                    else{
+                        self.errorContact = "Allow access to ‘Contacts’ in your smartphone Settings"
+                    }
+
                     
-                    let alertController = UIAlertController(title: productName as? String, message: NSLocalizedString("ErrorContact", comment: ""), preferredStyle: .alert)
+                    let alertController = UIAlertController(title: productName as? String, message:  self.errorContact!, preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
                         UIAlertAction in
                         let _ = self.navigationController?.popViewController(animated: true)
