@@ -78,9 +78,8 @@ class EPContactCell: UITableViewCell {
             }
             else {
                 
-                let preferredLanguage = NSLocale.preferredLanguages[0] as String
-                
-                if preferredLanguage == "ru-RU" {
+                let preferredLanguage = (NSLocale.preferredLanguages.first)?.components(separatedBy: "-").first
+                if preferredLanguage == "ru" {
                     phoneNumberNot = "Нет номера телефона"
                 }
                 else{

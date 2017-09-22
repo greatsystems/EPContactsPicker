@@ -175,9 +175,9 @@ open class EPContactsPicker: UITableViewController, UISearchResultsUpdating, UIS
             
                 DispatchQueue.main.async {
                     let productName = Bundle.main.infoDictionary!["CFBundleDisplayName"]!
-                    let preferredLanguage = NSLocale.preferredLanguages[0] as String
-
-                    if preferredLanguage == "ru-RU" {
+                    
+                    let preferredLanguage = (NSLocale.preferredLanguages.first)?.components(separatedBy: "-").first
+                    if preferredLanguage == "ru" {
                         self.errorContact = "Включите доступ к ''Контакты'' в Настройках смартфона"
                     }
                     else{
